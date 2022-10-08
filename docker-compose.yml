@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '2345:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@de.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - '8081:80'
+volumes:
+  db:
+    driver: local
+networks:
+  db: 
+    driver: pg-network
+  pgadmin: 
+    driver: pg-network
