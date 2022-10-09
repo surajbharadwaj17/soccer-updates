@@ -1,7 +1,7 @@
 from schema import Tables
-from sqlalchemy import create_engine, insert, update
+from sqlalchemy import and_, create_engine, insert, select, update
 from dataclasses import dataclass
-
+import pandas as pd
 @dataclass
 class DBConfig:
     user : str
@@ -42,9 +42,22 @@ class DBManager:
             values(data)
         )
         return sql
+    
+    def _filter(self, sql, filters):
+        for k,v in filters.items():
+            and_()
+            sql = sql.filter()
+        return sql
 
-    def select(self, table, filters:dict):
-        pass
+    def select(self, table, filters:dict=None) -> pd.DataFrame:
+        sql = select(self._table(table_name=table))
+        if filters:
+            sql = self._filter(sql, filters)
+            sql = select(self._table(table_name=table)).where(filters)
+
+        with self.engine.connect() as con:
+            df = pd.read_sql(sql=sql, con=con)
+        return df
 
     def update(self, table, filters:dict, data):
         sql = (

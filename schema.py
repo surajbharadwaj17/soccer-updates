@@ -44,9 +44,9 @@ class Tables:
             Column("id", Integer, primary_key=True, nullable=False),
             Column("name", String, nullable=False),
             Column("nationality", String),
-            Column("position", String),
-            Column("jersey_number", String),
-            Column("current_team", Integer, ForeignKey("t_teams.id"))
+            Column("position", String)
+            # Column("jersey_number", String),
+            # Column("current_team", Integer, ForeignKey("t_teams.id"))
         )
 
     
@@ -68,8 +68,10 @@ class Tables:
             "t_standings",
             self.metadata,
             Column("position", Integer, primary_key=True, nullable=False),
-            Column("team_id", Integer, ForeignKey("t_teams.id"), nullable=False),
-            Column("comp_id", Integer, ForeignKey("t_competitions.id"))
+            Column("stage", String, primary_key=True),
+            Column("group", String, primary_key=True),
+            Column("team_id", Integer, nullable=False),
+            Column("comp_id", Integer, nullable=False)
         )
 
     def _create(self):
