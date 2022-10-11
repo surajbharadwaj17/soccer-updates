@@ -40,8 +40,6 @@ class DBManager:
 
     def _onconflict(self, sql, table_name):
         table = self._table(table_name)
-        columns = table.c
-        # print(table.c, type(table.c))
         primary_keys = [key.name for key in inspect(table).primary_key]
 
         update_dict = {

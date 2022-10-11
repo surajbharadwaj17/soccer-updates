@@ -45,8 +45,8 @@ class DataProcessor:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="localhost",
-                port="2345",
+                host="soccer-updates-db-1",
+                port="5432",
                 name="football",
                 schema="football_updates"
             )
@@ -180,8 +180,8 @@ class DataManager:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="localhost",
-                port="2345",
+                host="soccer-updates-db-1",
+                port="5432",
                 name="football",
                 schema="football_updates"
             )
@@ -237,33 +237,3 @@ class DataManager:
         self.db.execute(sql)
 
 
-# # Area ingestion
-# manager = DataManager(data_type="area")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_area")
-
-# # Competitions ingestion
-# manager = DataManager(data_type="competitions")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_competitions")
-
-# Teams ingestion
-# manager = DataManager(data_type="teams")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_teams")
-
-# Standings ingestion
-# manager = DataManager(data_type="standings")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_standings")
-
-
-# manager = DataManager(data_type="competitions")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# #manager._ingest_data(proc_data, "t_competitions")
-# print(manager.db.metadata)
