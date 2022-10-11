@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, List
-
+from sqlalchemy.inspection import inspect
+from sqlalchemy.dialects.postgresql import *
 from database import DBManager, DBConfig
 import requests
 
@@ -208,8 +209,7 @@ class DataManager:
         """
         self.collector.source = self.collector._get_source(type="teams")
         teams_data = self.collector.collect().json()["teams"][0]
-        squad_data = []
-        coach_data = []
+        squad_data, coach_data = [], []
         for team in teams_data:
             self.collector.source = self.collector._get_source(type="person/team", team_id=teams_data["id"])
             response = self.collector.collect().json()
@@ -233,7 +233,9 @@ class DataManager:
 
     def _ingest_data(self, proc_data, table):
         sql = self.db.insert(table=table, data=proc_data)
+        #sql = self._onupdate(sql, table)
         self.db.execute(sql)
+
 
 # # Area ingestion
 # manager = DataManager(data_type="area")
@@ -254,10 +256,10 @@ class DataManager:
 # manager._ingest_data(proc_data, "t_teams")
 
 # Standings ingestion
-manager = DataManager(data_type="standings")
-data = manager._get_data()
-proc_data = manager._process_data(data)
-manager._ingest_data(proc_data, "t_standings")
+# manager = DataManager(data_type="standings")
+# data = manager._get_data()
+# proc_data = manager._process_data(data)
+# manager._ingest_data(proc_data, "t_standings")
 
 
 # manager = DataManager(data_type="competitions")
