@@ -71,6 +71,7 @@ class Tables:
             Column("stage", String, primary_key=True),
             Column("group", String, primary_key=True),
             Column("team_id", Integer, nullable=False),
+            Column("team_name", String),
             Column("comp_id", Integer, nullable=False)
         )
 

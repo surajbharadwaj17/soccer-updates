@@ -1,4 +1,4 @@
-from schema import Tables
+from src.schema import Tables
 from sqlalchemy import and_, create_engine, insert, select, update
 from sqlalchemy.dialects.postgresql import *
 from sqlalchemy.inspection import inspect

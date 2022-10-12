@@ -11,6 +11,7 @@ services:
       - '2345:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -25,9 +26,6 @@ volumes:
   db:
     driver: local
 networks:
-  ingest:
-    driver: pg-network
-  db: 
-    driver: pg-network
-  pgadmin: 
-    driver: pg-network
+  default:
+    driver: bridge
+    name: pg-network

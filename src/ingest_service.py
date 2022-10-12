@@ -1,4 +1,5 @@
 from typing import List
+import time
 from ingest import DataManager
 from datetime import datetime
 from argparse import ArgumentParser
@@ -12,7 +13,10 @@ def ingest(types):
         "teams" : "t_teams",
         "standings" : "t_standings"
     }
-    print((types[0]).split(","))
+
+    # Adding sleep 10 for db to start
+    time.sleep(10)
+
     for data_type in (types[0]).split(","):
         if data_type in config:
             print(f"Ingesting {data_type} data ...")

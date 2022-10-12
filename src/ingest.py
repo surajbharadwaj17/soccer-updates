@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any, List
 from sqlalchemy.inspection import inspect
 from sqlalchemy.dialects.postgresql import *
-from database import DBManager, DBConfig
+from src.database import DBManager, DBConfig
 import requests
 
 @dataclass
@@ -45,7 +45,7 @@ class DataProcessor:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="soccer-updates-db-1",
+                host="db",
                 port="5432",
                 name="football",
                 schema="football_updates"
@@ -150,6 +150,7 @@ class DataProcessor:
                     "stage" : stage["stage"],
                     "group" : stage["group"],
                     "team_id" : table["team"]["id"],
+                    "team_name" : table["team"]["name"],
                     "comp_id" : 2001
                 })
 
@@ -180,7 +181,7 @@ class DataManager:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="soccer-updates-db-1",
+                host="db",
                 port="5432",
                 name="football",
                 schema="football_updates"
