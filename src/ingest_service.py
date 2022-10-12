@@ -1,6 +1,6 @@
 from typing import List
 import time
-from ingest import DataManager
+from src.ingest import DataManager
 from datetime import datetime
 from argparse import ArgumentParser
 
