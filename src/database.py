@@ -1,5 +1,7 @@
-from schema import Tables
+from src.schema import Tables
 from sqlalchemy import and_, create_engine, insert, select, update
+from sqlalchemy.dialects.postgresql import *
+from sqlalchemy.inspection import inspect
 from dataclasses import dataclass
 import pandas as pd
 @dataclass
@@ -36,17 +38,30 @@ class DBManager:
     def _table(self, table_name:str):
         return self.metadata.tables[f"{self.config.schema}.{table_name}"]
 
-    def insert(self, table, data):
-        sql = (
-            insert(self._table(table_name=table)).
-            values(data)
+    def _onconflict(self, sql, table_name):
+        table = self._table(table_name)
+        primary_keys = [key.name for key in inspect(table).primary_key]
+
+        update_dict = {
+        c.name: c for c in sql.excluded
+        }
+        sql = sql.on_conflict_do_update(
+        index_elements=primary_keys,
+        set_=update_dict,
         )
         return sql
-    
+
+
     def _filter(self, sql, filters):
         for k,v in filters.items():
             and_()
             sql = sql.filter()
+        return sql
+
+    def insert(self, table, data, onconflict=True):
+        sql = insert(self._table(table_name=table)).values(data)
+        if onconflict:
+            sql = self._onconflict(sql, table)
         return sql
 
     def select(self, table, filters:dict=None) -> pd.DataFrame:
@@ -60,10 +75,7 @@ class DBManager:
         return df
 
     def update(self, table, filters:dict, data):
-        sql = (
-            update(self._table(table_name=table)).
-            where(filters)
-        )
+        sql = update(self._table(table_name=table)).where(filters)
 
     def delete(self, table, filters:dict):
         pass

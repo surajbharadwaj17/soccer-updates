@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Any, List
-
-from database import DBManager, DBConfig
+from sqlalchemy.inspection import inspect
+from sqlalchemy.dialects.postgresql import *
+from src.database import DBManager, DBConfig
 import requests
 
 @dataclass
@@ -44,8 +45,8 @@ class DataProcessor:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="localhost",
-                port="2345",
+                host="db",
+                port="5432",
                 name="football",
                 schema="football_updates"
             )
@@ -149,6 +150,7 @@ class DataProcessor:
                     "stage" : stage["stage"],
                     "group" : stage["group"],
                     "team_id" : table["team"]["id"],
+                    "team_name" : table["team"]["name"],
                     "comp_id" : 2001
                 })
 
@@ -179,8 +181,8 @@ class DataManager:
             dbConfig=DBConfig(
                 user="postgres",
                 pwd="postgres",
-                host="localhost",
-                port="2345",
+                host="db",
+                port="5432",
                 name="football",
                 schema="football_updates"
             )
@@ -208,8 +210,7 @@ class DataManager:
         """
         self.collector.source = self.collector._get_source(type="teams")
         teams_data = self.collector.collect().json()["teams"][0]
-        squad_data = []
-        coach_data = []
+        squad_data, coach_data = [], []
         for team in teams_data:
             self.collector.source = self.collector._get_source(type="person/team", team_id=teams_data["id"])
             response = self.collector.collect().json()
@@ -233,35 +234,7 @@ class DataManager:
 
     def _ingest_data(self, proc_data, table):
         sql = self.db.insert(table=table, data=proc_data)
+        #sql = self._onupdate(sql, table)
         self.db.execute(sql)
 
-# # Area ingestion
-# manager = DataManager(data_type="area")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_area")
 
-# # Competitions ingestion
-# manager = DataManager(data_type="competitions")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_competitions")
-
-# Teams ingestion
-# manager = DataManager(data_type="teams")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# manager._ingest_data(proc_data, "t_teams")
-
-# Standings ingestion
-manager = DataManager(data_type="standings")
-data = manager._get_data()
-proc_data = manager._process_data(data)
-manager._ingest_data(proc_data, "t_standings")
-
-
-# manager = DataManager(data_type="competitions")
-# data = manager._get_data()
-# proc_data = manager._process_data(data)
-# #manager._ingest_data(proc_data, "t_competitions")
-# print(manager.db.metadata)

@@ -6,10 +6,12 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=football
     ports:
       - '2345:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -18,11 +20,12 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - '8081:80'
+  ingest:
+    build: ./src
 volumes:
   db:
     driver: local
 networks:
-  db: 
-    driver: pg-network
-  pgadmin: 
-    driver: pg-network
+  default:
+    driver: bridge
+    name: pg-network
