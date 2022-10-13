@@ -10,10 +10,10 @@ Idea is to create a web application purely for sports updates. This website will
 
 ## Schema Diagram
 
-![ER Diagram](football-schema.png)
+![ER Diagram](./images/football-schema.png)
 
 ## UML Diagram
-![UML Diagram](classes.png)
+![UML Diagram](./images/classes.png)
 
 ## Packages
-![Packages](packages.png)
+![Packages](./images/packages.png)
