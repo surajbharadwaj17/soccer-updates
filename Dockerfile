@@ -1,6 +1,6 @@
 FROM python:3.9
 
-RUN pip install pandas sqlalchemy psycopg2 requests
+RUN pip install pandas sqlalchemy psycopg2 requests pyarrow
 
 WORKDIR /app
 COPY ingest.py /app/ingest.py

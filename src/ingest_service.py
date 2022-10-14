@@ -1,6 +1,7 @@
 from typing import List
 import time
-from src.ingest import DataManager
+from ingest import DataManager
+from taxi_ingest import TaxiIngest
 from datetime import datetime
 from argparse import ArgumentParser
 
@@ -31,6 +32,9 @@ def ingest(types):
             delta = end_time-start_time
             print(f"Completed {data_type} ingestion in {delta.total_seconds()} seconds or {delta.total_seconds()/60} mins ")
 
+def ingest_taxi():
+    t_ingest = TaxiIngest()
+    t_ingest.ingest()
 
 
 if __name__ == "__main__":
@@ -40,6 +44,7 @@ if __name__ == "__main__":
     parser.add_argument("--types", nargs="*", type=str, help="List of data types for ingestion..")
     args = parser.parse_args()
 
-    ingest(args.types)
+    #ingest(args.types)
+    ingest_taxi()
 
 
