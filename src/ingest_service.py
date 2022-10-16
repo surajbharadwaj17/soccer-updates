@@ -45,6 +45,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     #ingest(args.types)
+    time.sleep(10)
     ingest_taxi()
 
 

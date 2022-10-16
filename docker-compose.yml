@@ -21,7 +21,7 @@ services:
     ports:
       - '8081:80'
   ingest:
-    build: ./src
+    build: .
 volumes:
   db:
     driver: local
