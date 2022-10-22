@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any, List
 from sqlalchemy.inspection import inspect
 from sqlalchemy.dialects.postgresql import *
-from src.database import DBManager, DBConfig
+from database import DBManager, DBConfig
 import requests
 
 @dataclass
@@ -175,7 +175,7 @@ class DataProcessor:
 
 
 class DataManager:
-    def __init__(self, data_type) -> None:
+    def __init__(self, data_type, schema:str="football_updates") -> None:
         self.type = data_type
         self.db = DBManager(
             dbConfig=DBConfig(
