@@ -14,12 +14,19 @@ class TaxiIngest:
 
 
     def ingest(self):
+        ##### yellow taxi ##########
         # Read parquet
-        df = pd.read_parquet("./src/taxi/yellow_tripdata_2022-01.parquet", engine="pyarrow")
+        # df = pd.read_parquet("./src/taxi/yellow_tripdata_2022-01.parquet", engine="pyarrow")
 
+        # engine = self.db.engine
+        # df.to_sql(name="yellow_taxi_data", con=engine, schema="ny_taxi", if_exists="append", chunksize=100000)
+        # print("Taxi data ingested.")
+
+        ###### zone lookup ##########
+        print(f"Starting zone lookup data ingestion.. ")
+        df = pd.read_csv("./src/taxi/taxi+_zone_lookup.csv")
         engine = self.db.engine
-        df.to_sql(name="yellow_taxi_data", con=engine, schema="ny_taxi", if_exists="append", chunksize=100000)
-        print("Taxi data ingested.")
+        df.to_sql(name="zones", con=engine, schema="ny_taxi", if_exists="replace")
 
-
+        print("Zone lookup data ingested.")
 
