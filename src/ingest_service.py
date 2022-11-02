@@ -24,9 +24,9 @@ def ingest(types):
             start_time = datetime.now()
 
             manager = DataManager(data_type=data_type)
-            data = manager._get_data()
-            proc_data = manager._process_data(data)
-            manager._ingest_data(proc_data, config[data_type])
+            data = manager.get_data()
+            proc_data = manager.process_data(data)
+            manager.ingest_data(proc_data, config[data_type])
 
             end_time = datetime.now()
             delta = end_time-start_time

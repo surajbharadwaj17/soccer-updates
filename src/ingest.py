@@ -190,7 +190,7 @@ class DataManager:
         self.collector = DataCollector(type=data_type)
         self.processor = DataProcessor(type=data_type)
 
-    def _get_data(self) -> dict:
+    def get_data(self) -> dict:
         if self.type == "persons":
             return self._get_persons_data()
         elif self.type == "teams":
@@ -229,10 +229,10 @@ class DataManager:
         self.collector.source = self.collector._get_source(type="teams")
         return self.collector.collect().json()
 
-    def _process_data(self, data):
+    def process_data(self, data):
         return self.processor.process(data)
 
-    def _ingest_data(self, proc_data, table):
+    def ingest_data(self, proc_data, table):
         sql = self.db.insert(table=table, data=proc_data)
         #sql = self._onupdate(sql, table)
         self.db.execute(sql)
